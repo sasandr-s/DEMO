@@ -31,7 +31,14 @@ def verify_password(hash,password):
 def get_register(request: Request):
     return templates.TemplateResponse(request= request, name ="register.html")
 
+@app.get("/login")
+def get_login(request: Request):
+    return templates.TemplateResponse(request= request, name ="login.html")
 
+
+@app.get("/request")
+def get_request(request: Request):
+    return templates.TemplateResponse(request= request, name ="request.html")
 
 
 
@@ -59,7 +66,11 @@ def login(request: Request, user: UserLogin, db: Session = Depends(get_db)):
     request.session["role"] = req.role
     return {"message":"Успешно авторизирован"}
 
-
+@app.get("/admin" )
+def admin(request: Request, db: Session = Depends(get_db), limit = 5, page = 1):
+    count = db.query(RequestORM).count()
+    req = db.query(RequestORM).limit(limit).offset((page-1)*limit).all()
+    return templates.TemplateResponse(request=request, name = "admin.html", context={"data":req})
 
 
 @app.post("/api/request")

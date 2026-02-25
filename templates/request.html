@@ -1,0 +1,35 @@
+{%extends "base.html"%}
+
+{%block content%}
+<div class="text-xl">
+    <form >
+        зал
+        <input type="radio" name="location" placeholder="зал" value="зал" required>
+        рест
+        <input type="radio" name="location" placeholder="ресторан" value="ресторан" required>
+        летняя веранда
+        <input type="radio" name="location" placeholder="летняя веранда" value="летняя веранда" required>
+        закрытая веранда
+        <input type="radio" name="place" placeholder="закрытая веранда" value="закрытая веранда" required>
+        <input type="text" name ="pay" placeholder="укажите желаемый тип оплаты">
+
+        <input type="datetime-local" name="date">
+        <button type="submit">оформить</button>
+    </button>
+
+</div>
+<script>
+    document.querySelector("form").addEventListener("submit", event => {
+        const data = Object.fromEntries(new FormData(event.target))
+        alert(data.place)
+        event.preventDefault()
+        axios.post("api/request", data)
+        .then(()=>{
+            window.location.href = "/home"
+        })
+        .catch(err => {
+            document.getElementById("err").textContent = err.response?.data?.message | "Ошибка при регистрации"
+        })
+    })
+</script>
+{%endblock%}

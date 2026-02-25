@@ -1,0 +1,21 @@
+{%extends "base.html"%}
+
+{%block content%}
+
+    {%for i in data%}
+    {{i.status}}
+    <button onclick="statusup({{i.id}}, 'Банкет назначен')">Банкет назначен</button>
+    <button onclick="statusup({{i.id}}, 'Банкет завершен')">Банкет завершен</button>
+    {%endfor%}
+    <script>
+        function statusup(id, status){
+             axios.patch(`api/request/${id}`, {status: status})
+        .then(()=>{
+            alert("успешно обновлено")
+        })
+        .catch(err => {
+            document.getElementById("err").textContent = err.response?.data?.message | "Ошибка при регистрации"
+        })
+        }
+    </script>
+{%endblock%}

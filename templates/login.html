@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+
+{%block content%}
+<div class="text-xl">
+    <form >
+        <input type="text" name="login" placeholder="login" required>
+        <input type="password" name = "password" placeholder="Пароль" required>
+        <button type="submit">Войти</button>
+    </form>
+    <span id = "err"></span>
+</div>
+<script>
+    document.querySelector("form").addEventListener("submit", event => {
+        
+        const data = Object.fromEntries(new FormData(event.target))
+        event.preventDefault()
+
+        axios.post("api/login", data)
+        .then(()=>{
+            window.location.href = "/home"
+        })
+        .catch(err => {
+            alert(err.response.data.detail)
+            document.getElementById("err").textContent = err.response?.detail | "Ошибка при авторизации"
+        })
+    })
+</script>
+{%endblock%}
