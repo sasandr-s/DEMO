@@ -1,0 +1,26 @@
+body{
+    max-width: 1000px;
+    min-width: 390px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-;
+
+}
+input{
+    border: 1px black solid;
+
+}
+
+button{
+    border: none;
+    color: white;
+    background-color: black;
+    max-width: 300px;
+
+}

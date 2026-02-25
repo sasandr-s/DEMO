@@ -71,8 +71,10 @@ def admin(request: Request, db: Session = Depends(get_db), limit = 5, page = 1):
     count = db.query(RequestORM).count()
     req = db.query(RequestORM).limit(limit).offset((page-1)*limit).all()
     return templates.TemplateResponse(request=request, name = "admin.html", context={"data":req})
-
-
+@app.get("/home")
+def home(request: Request, db: Session = Depends(get_db)):
+    req = db.query(RequestORM).filter_by(user_id = request.session.get("user_id")).all()
+    return templates.TemplateResponse(request=request, name = "home.html", context={"data":req})
 @app.post("/api/request")
 def request(request: Request, req: Request_add, db: Session = Depends(get_db)):
     req = RequestORM(
