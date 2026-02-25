@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+
+{%block content%}
+<div class="text-xl">
+    <form >
+        <input type="text" name="login" placeholder="login" minlength="6" pattern="[A-Za-z0-9]*" required>
+        <input type="email" name="email" placeholder="Ваша почта" required>
+        <input type="password" name = "password" placeholder="Пароль" minlength="8" required>
+        <input type="text" name="full_name" placeholder="Ваше ФИО" minlength="6" pattern="[А-яА-яёЁ0-9\s]*" required>
+        <input type="tel" name="phone" placeholder="Номер телефона" required>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <span id = "err"></span>
+</div>
+<script>
+    document.querySelector("form").addEventListener("submit", event => {
+        const data = Object.fromEntries(new FormData(event.target))
+        event.preventDefault()
+        axios.post("api/register", data)
+        .then(()=>{
+            window.location.href = "/home"
+        })
+        .catch(err => {
+            document.getElementById("err").textContent = err.response?.data?.message | "Ошибка при регистрации"
+        })
+    })
+</script>
+{%e
