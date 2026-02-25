@@ -3,24 +3,56 @@ body{
     min-width: 390px;
     padding-left: 10px;
     padding-right: 10px;
+    margin: auto;
+    background-color: #FFFDD0;
 }
 
 form{
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex-;
+    align-items: center;
+    border-radius: 20px;
+    background-color:#FFDAB9;
+    max-width: 500px;
+    margin:20px auto ;
+    padding: 20px;
+    
 
 }
 input{
-    border: 1px black solid;
-
+    border: 1px #DAA520 solid;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #FFFDD0;
+    text-align: center;
 }
 
 button{
     border: none;
     color: white;
-    background-color: black;
-    max-width: 300px;
+    background-color: #DAA520;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 10px;
+    border-radius: 20px;
 
+}
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #FFDAB9;
+}
+
+.rew{
+    background-color: #FFDAB9;
+    margin: 10px 0;
+    border-radius: 0;
+    display: block;
 }
