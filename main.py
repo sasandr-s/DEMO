@@ -24,8 +24,10 @@ def verify_password(hash,password):
     except:
         return False
     
-
-
+def user_check(request: Request):
+    if not request.session.get("user_id"): raise HTTPException(status_code=401)
+def admin_check(request: Request):
+    if not request.session.get("role") == admin: raise HTTPException(status_code=401)
 
 @app.get("/register")
 def get_register(request: Request):
@@ -37,7 +39,7 @@ def get_login(request: Request):
 
 
 @app.get("/request")
-def get_request(request: Request):
+def get_request(request: Request, dp =Depends(user_check)):
     return templates.TemplateResponse(request= request, name ="request.html")
 
 
@@ -66,7 +68,7 @@ def login(request: Request, user: UserLogin, db: Session = Depends(get_db)):
     request.session["role"] = req.role
     return {"message":"Успешно авторизирован"}
 
-@app.get("/admin" )
+@app.get("/admin", dp = Depends(admin_check) )
 def admin(request: Request, db: Session = Depends(get_db), limit = 5, page = 1):
     count = db.query(RequestORM).count()
     req = db.query(RequestORM).limit(limit).offset((page-1)*limit).all()
@@ -76,7 +78,7 @@ def home(request: Request, db: Session = Depends(get_db)):
     req = db.query(RequestORM).filter_by(user_id = request.session.get("user_id")).all()
     return templates.TemplateResponse(request=request, name = "home.html", context={"data":req})
 @app.post("/api/request")
-def request(request: Request, req: Request_add, db: Session = Depends(get_db)):
+def request(request: Request, req: Request_add, db: Session = Depends(get_db),dp =Depends(user_check)):
     req = RequestORM(
         user_id = request.session.get("user_id"),
         location = req.location,
@@ -88,7 +90,7 @@ def request(request: Request, req: Request_add, db: Session = Depends(get_db)):
     return {"message":"Успешно создано"}
 
 @app.patch("/api/request/{id}")
-def patch_request(id: int, status = Body(embed=True), db: Session = Depends(get_db)):
+def patch_request(id: int, status = Body(embed=True), db: Session = Depends(get_db) dp =Depends(admin_check)):
     req = db.query(RequestORM).filter_by(id = id).first()
     req.status = status
     db.commit()
